@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Car extends Model
 {
 
-    protected $table = 'comments';
+    protected $table = 'cars';
     /**
      * The attributes that are mass assignable.
      *
@@ -18,8 +18,7 @@ class Car extends Model
         'title',
         'description',
         'image',
-        'purchase_price',
-        'video_path',
+        'price',
         'status',
     ];
 
