@@ -9,9 +9,6 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        //$user = \App\Models\User::where('email', 'kaiolorain23@fakemail.com')->first();
-        //dd($user);
-        //dd($request->all());
         $credentials = $request->only('email', 'password');
 
         if (!$token = JWTAuth::attempt($credentials)) {

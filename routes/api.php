@@ -20,6 +20,9 @@ Route::middleware('auth:api')->group(function () {
 
     Route::get('/cars', [CarController::class, 'index']);
     Route::post('/crear-auto', [CarController::class, 'store']);
+    Route::get('/ver-auto/{id}', [CarController::class, 'show']);
+    Route::put('/actualizar-auto/{id}', [CarController::class, 'update']);
+    Route::delete('/eliminar-auto/{id}', [CarController::class, 'destroy']);
     
     // Ejemplo: Rutas protegidas
     //Route::apiResource('posts', 'PostController');
