@@ -68,14 +68,14 @@ class UserController extends Controller
         //
     }
 
-    public function register(Request $request)
+    public function registerJson(Request $request)
     {
         $json = $request->input('json', null);
         $params = json_decode($json);
 
         $email = (!is_null($json) && isset($params->email)) ? $params->email : null;
         $name = (!is_null($json) && isset($params->name)) ? $params->name : null;
-        $surname = (!is_null($json) && isset($params->surname)) ? $params->surname : null;
+        $lastname = (!is_null($json) && isset($params->lastname)) ? $params->lastname : null;
         $role = 'ROLE_USER';
         $password = (!is_null($json) && isset($params->password)) ? $params->password : null;
 
@@ -92,7 +92,7 @@ class UserController extends Controller
                 $user = User::create([
                     'email' => $email,
                     'name' => $name,
-                    'surname' => $surname,
+                    'surname' => $lastname,
                     'role' => $role,
                     'password' => Hash::make($password),
                 ]);
@@ -116,4 +116,47 @@ class UserController extends Controller
         return response()->json($data, 200);
 
     }
+
+    public function register(Request $request)
+{
+    $email = $request->input('email');
+    $name = $request->input('name');
+    $lastname = $request->input('lastname');
+    $role = 'ROLE_USER';
+    $password = $request->input('password');
+
+    if(!is_null($email) && !is_null($password) && !is_null($name)) {
+        $isseUser = User::where('email', $email)->first();
+
+        if ($isseUser) {
+            $data = array(
+                'status' => 'error',
+                'code' => 400,
+                'message' => 'Usuario ya existe'
+            );
+        } else {
+            $user = User::create([
+                'email' => $email,
+                'name' => $name,
+                'surname' => $lastname,
+                'role' => $role,
+                'password' => Hash::make($password),
+            ]);
+            $data = array(
+                'status' => 'success',
+                'code' => 200,
+                'message' => 'Usuario creado correctamente'
+            );
+        }
+    } else {
+        $data = array(
+            'status' => 'error',
+            'code' => 400,
+            'message' => 'Datos incompletos'
+        );
+    }
+
+    return response()->json($data, 200);
+}
+
 }

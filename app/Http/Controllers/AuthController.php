@@ -23,7 +23,25 @@ class AuthController extends Controller
 
     public function logout()
     {
-        auth()->logout();
-        return response()->json(['message' => 'Sesión cerrada']);
+        try {
+            auth()->logout();
+            
+            // Opcional: Invalidar el token actual
+            $token = auth()->getToken();
+            if ($token) {
+                auth()->invalidate($token);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Sesión cerrada correctamente'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al cerrar sesión'
+            ], 500);
+        }
     }
 }
